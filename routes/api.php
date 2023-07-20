@@ -40,5 +40,8 @@ Route::group(['middleware' => ['api_access']], function () use ($basePathControl
 	Route::resource('products', 'App\Http\Controllers\ProductsController');
 	Route::get('get-all-products', 'App\Http\Controllers\ProductsController@getAll');
 
+	Route::resource('pruebas', 'App\Http\Controllers\PruebasController');
+	Route::get('get-all-pruebas', 'App\Http\Controllers\PruebasController@getAll');
+
 	/* Add new routes here */
 });
