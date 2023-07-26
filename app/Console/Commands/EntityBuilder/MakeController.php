@@ -64,7 +64,7 @@ class MakeController extends Command
     {
         $entity = json_decode($this->argument('entity'), true);
         $name = strtolower($entity['name']);
-        $name = preg_replace('/\W/', ' ', $name);
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
         return [
             'namespace'        => 'App\\Http\\Controllers',
             'class'            => $this->getPluralClassName($entity['name']),
@@ -137,7 +137,8 @@ class MakeController extends Command
      */
     public function getPluralClassName($name)
     {
-        $name = preg_replace('/\W/', ' ', $name);
+
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
         return ucwords(Pluralizer::plural($name));
     }
 
@@ -149,7 +150,7 @@ class MakeController extends Command
      */
     public function getCamelCaseName($name)
     {
-        $name = preg_replace('/\W/', ' ', $name);
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
         return lcfirst($this->getSingularClassName($name));
     }
 

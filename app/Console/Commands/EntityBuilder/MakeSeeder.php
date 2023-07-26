@@ -176,7 +176,7 @@ class MakeSeeder extends Command
      */
     public function getPluralClassName($name)
     {
-        $name = preg_replace('/\W/', ' ', $name);
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
 
         return ucwords($name);
     }

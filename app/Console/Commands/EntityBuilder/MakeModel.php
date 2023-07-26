@@ -140,7 +140,7 @@ class MakeModel extends Command
      */
     public function getSourceFilePath()
     {
-        $name = preg_replace('/\W/', ' ', $this->entity['name']);
+        $name =  preg_replace("/[^a-zA-Z]/", "", $this->entity['name']);
         $name = ucfirst($name);
         return base_path('App\\Models') .'\\' . $name . '.php';
     }
