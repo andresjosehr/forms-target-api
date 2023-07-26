@@ -69,16 +69,20 @@ class BuildEntity extends Command
         $routes = file_get_contents(base_path('routes/api.php'));
 
         // Check if the route already exists
-        if (strpos($routes, $this->getPluralClassName($this->entity['name'])) !== false) {
+        if (strpos($routes, ($this->entity['name'])) !== false) {
             $this->error('Route already exists');
             return Command::SUCCESS;
         }
 
         // Replace the /* Add new routes here */ with the new route
+        // Change _ to -
+        $routeName = strtolower(str_replace('_', '-', $routes));
+
+
         $routes = str_replace(
             '/* Add new routes here */',
-            'Route::resource(\'' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
-            'Route::get(\'get-all-' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
+            'Route::resource(\'' . $routeName . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
+            'Route::get(\'get-all-' . $routeName . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
             $routes
         );
 
@@ -125,8 +129,8 @@ class BuildEntity extends Command
         // Replace the /* Add new routes here */ with the new route
         $routes = str_replace(
             '/* Add new routes here */',
-            'Route::resource(\'' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
-            'Route::get(\'get-all-' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
+            'Route::resource(\'' . strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
+            'Route::get(\'get-all-' . strtolower($this->entity['name']) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
             $routes
         );
 

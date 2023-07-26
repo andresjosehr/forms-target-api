@@ -53,6 +53,7 @@ class MakeMigration extends Command
     public function getStubVariables()
     {
         return [
+            'entityName' => $this->entity['name'],
             'table'   => $this->getTableName(),
             'columns' => $this->getColumnsString(),
         ];
@@ -69,13 +70,13 @@ class MakeMigration extends Command
         // Keep in mind that if name contains more than one word, it must be separated by underscore and pluralize. Examp: UserGroup => user_groups
         // First we get the name of the entity
         $name = $this->entity['name'];
-        // Then separate the words by uppercase letters
-        $name = preg_split('/(?=[A-Z])/', $name, -1, PREG_SPLIT_NO_EMPTY);
-        // Then we join the words with underscore
-        $name = implode('_', $name);
-        // Finally we pluralize the name
-        $name = Pluralizer::plural($name);
-        // And return the name in lowercase
+        // // Then separate the words by uppercase letters
+        // $name = preg_split('/(?=[A-Z])/', $name, -1, PREG_SPLIT_NO_EMPTY);
+        // // Then we join the words with underscore
+        // $name = implode('_', $name);
+        // // Finally we pluralize the name
+        // $name = $name;
+        // // And return the name in lowercase
         return strtolower($name);
     }
 
