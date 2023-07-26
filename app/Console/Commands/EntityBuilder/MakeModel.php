@@ -52,9 +52,13 @@ class MakeModel extends Command
     */
     public function getStubVariables()
     {
+        $name =  preg_replace("/[^a-zA-Z]/", "", $this->entity['name']);
+        $name = ucfirst($name);
+
         return [
             'namespace'       => 'App\\Models',
-            'class'           => $this->getSingularClassName($this->entity['name']),
+            'entityName'      => strtolower($this->entity['name']),
+            'class'           => $name,
             'fillAbleColumns' => $this->getFillableColumns(),
             'relationships'   => $this->getRelationships(),
         ];
@@ -139,7 +143,9 @@ class MakeModel extends Command
      */
     public function getSourceFilePath()
     {
-        return base_path('App\\Models') .'\\' . ucfirst($this->entity['name']) . '.php';
+        $name =  preg_replace("/[^a-zA-Z]/", "", $this->entity['name']);
+        $name = ucfirst($name);
+        return base_path('App\\Models') .'\\' . $name . '.php';
     }
 
     /**

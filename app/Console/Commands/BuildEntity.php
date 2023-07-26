@@ -33,58 +33,11 @@ class BuildEntity extends Command
      */
     public function getPluralClassName($name)
     {
+        // Remove all non-word characters (everything except letters)
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
         return ucwords(Pluralizer::plural($name));
     }
 
-    public function builfFromFile()
-    {
-        $name = strtolower($this->option('file'));
-        $file = storage_path('app\\public\\entities-schemas\\' . $name . '.json');
-        $content = file_get_contents($file);
-        $entity = json_decode($content, true);
-
-        $this->call('make:entity-controller', [
-            'entity' => $entity
-        ]);
-
-        $this->call('make:entity-request', [
-            'entity' => $entity
-        ]);
-
-        $this->call('make:entity-model', [
-            'entity' => $entity
-        ]);
-
-        $this->call('make:entity-migration', [
-            'entity' => $entity
-        ]);
-
-         $this->call('make:entity-seeder', [
-            'entity' => $entity
-        ]);
-
-        // Edit the routes file
-
-        // Get the routes/api.php file
-        $routes = file_get_contents(base_path('routes/api.php'));
-
-        // Check if the route already exists
-        if (strpos($routes, $this->getPluralClassName($this->entity['name'])) !== false) {
-            $this->error('Route already exists');
-            return Command::SUCCESS;
-        }
-
-        // Replace the /* Add new routes here */ with the new route
-        $routes = str_replace(
-            '/* Add new routes here */',
-            'Route::resource(\'' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
-            'Route::get(\'get-all-' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
-            $routes
-        );
-
-        // Save the routes/api.php file
-        file_put_contents(base_path('routes/api.php'), $routes);
-    }
 
     public function builfFromObject(){
 
@@ -115,23 +68,26 @@ class BuildEntity extends Command
 
         // Get the routes/api.php file
         $routes = file_get_contents(base_path('routes/api.php'));
-
+        $routeName = strtolower(str_replace('_', '-', $this->entity['name']));
         // Check if the route already exists
-        if (strpos($routes, $this->getPluralClassName($this->entity['name'])) !== false) {
+        if (strpos($routes, $routeName) !== false) {
             $this->error('Route already exists');
             return Command::SUCCESS;
         }
 
+
         // Replace the /* Add new routes here */ with the new route
         $routes = str_replace(
             '/* Add new routes here */',
-            'Route::resource(\'' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
-            'Route::get(\'get-all-' . Pluralizer::plural(strtolower($this->entity['name'])) . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
+            'Route::resource(\'' . $routeName . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller');\n\t".
+            'Route::get(\'get-all-' . $routeName . "', 'App\\Http\\Controllers\\" . $this->getPluralClassName($this->entity['name']) . "Controller@getAll');\n\n\t/* Add new routes here */",
             $routes
         );
 
         // Save the routes/api.php file
         file_put_contents(base_path('routes/api.php'), $routes);
+
+        // $this->call('migrate');
     }
 
 
@@ -152,8 +108,6 @@ class BuildEntity extends Command
             self::builfFromObject();
         }
 
-        // Make php artisan migrate
-        // $this->call('migrate');
 
 
         return Command::SUCCESS;

@@ -9,6 +9,8 @@ class {{ class }} extends Model
 {
     use HasFactory;
 
+    protected $table = '{{ entityName }}';
+
     protected $fillable = [
         {{ fillAbleColumns }}
     ];
