@@ -54,6 +54,7 @@ class MakeModel extends Command
     {
         return [
             'namespace'       => 'App\\Models',
+            'entityName'      => strtolower($this->entity['name']),
             'class'           => $this->getSingularClassName($this->entity['name']),
             'fillAbleColumns' => $this->getFillableColumns(),
             'relationships'   => $this->getRelationships(),
@@ -139,7 +140,9 @@ class MakeModel extends Command
      */
     public function getSourceFilePath()
     {
-        return base_path('App\\Models') .'\\' . ucfirst($this->entity['name']) . '.php';
+        $name = preg_replace('/\W/', ' ', $this->entity['name']);
+        $name = ucfirst($name);
+        return base_path('App\\Models') .'\\' . $name . '.php';
     }
 
     /**

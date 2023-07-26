@@ -118,7 +118,9 @@ class MakeRequest extends Command
      */
     public function getSourceFilePath()
     {
-        return base_path('App\\Http\\Requests') .'\\' .ucfirst($this->entity['name']) . 'Request.php';
+        $name = preg_replace('/\W/', ' ', $this->entity['name']);
+        $name = ucfirst($name);
+        return base_path('App\\Http\\Requests') .'\\' . $name . 'Request.php';
     }
 
     /**
