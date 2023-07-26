@@ -109,7 +109,7 @@ class BuildEntity extends Command
         ]);
 
 
-        $this->call('migrate');
+        // $this->call('migrate');
 
         // Edit the routes file
 

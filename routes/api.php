@@ -26,22 +26,6 @@ Route::prefix('auth')->group(function (){
 });
 
 Route::group(['middleware' => ['api_access']], function () use ($basePathController) {
-	Route::resource('cars', 'App\Http\Controllers\CarsController');
     Route::resource('clients', 'App\Http\Controllers\ClientsController');
-    Route::resource('orders', 'App\Http\Controllers\OrdersController');
-	Route::get('get-all-cars', 'App\Http\Controllers\CarsController@getAll');
-
-	Route::resource('students', 'App\Http\Controllers\StudentsController');
-	Route::get('get-all-students', 'App\Http\Controllers\StudentsController@getAll');
-
-	Route::resource('holis', 'App\Http\Controllers\HolisController');
-	Route::get('get-all-holis', 'App\Http\Controllers\HolisController@getAll');
-
-	Route::resource('products', 'App\Http\Controllers\ProductsController');
-	Route::get('get-all-products', 'App\Http\Controllers\ProductsController@getAll');
-
-	Route::resource('pruebas', 'App\Http\Controllers\PruebasController');
-	Route::get('get-all-pruebas', 'App\Http\Controllers\PruebasController@getAll');
-
 	/* Add new routes here */
 });
