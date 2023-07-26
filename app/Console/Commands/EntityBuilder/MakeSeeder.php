@@ -52,9 +52,13 @@ class MakeSeeder extends Command
     */
     public function getStubVariables()
     {
+
+        $name =  preg_replace("/[^a-zA-Z]/", "", $this->entity['name']);
+        $name = ucfirst($name);
+
         return [
             'namespace' => 'Database\\Seeders' ,
-            'class'     => $this->getSingularClassName($this->entity['name']),
+            'class'     => $name,
             'tableName' =>  $this->getTableName(),
             'columns'   =>  $this->getColumnsString(),
         ];

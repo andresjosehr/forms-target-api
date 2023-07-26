@@ -34,7 +34,7 @@ class BuildEntity extends Command
     public function getPluralClassName($name)
     {
         // Remove all non-word characters (everything except letters)
-        $name = preg_replace('/\W/', ' ', $name);
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
         return ucwords(Pluralizer::plural($name));
     }
 
@@ -61,9 +61,6 @@ class BuildEntity extends Command
             'entity' => $this->option('entity'),
         ]);
 
-
-        $this->call('migrate');
-
         // Edit the routes file
 
         // Get the routes/api.php file
@@ -86,6 +83,8 @@ class BuildEntity extends Command
 
         // Save the routes/api.php file
         file_put_contents(base_path('routes/api.php'), $routes);
+
+        // $this->call('migrate');
     }
 
 
@@ -106,8 +105,6 @@ class BuildEntity extends Command
             self::builfFromObject();
         }
 
-        // Make php artisan migrate
-        // $this->call('migrate');
 
 
         return Command::SUCCESS;

@@ -63,8 +63,10 @@ class MakeController extends Command
     public function getStubVariables()
     {
         $entity = json_decode($this->argument('entity'), true);
-        $name = strtolower($entity['name']);
+
+        $name=$entity['name'];
         $name =  preg_replace("/[^a-zA-Z]/", "", $name);
+        $name = ucfirst($name);
         return [
             'namespace'        => 'App\\Http\\Controllers',
             'class'            => $this->getPluralClassName($entity['name']),
@@ -151,7 +153,7 @@ class MakeController extends Command
     public function getCamelCaseName($name)
     {
         $name =  preg_replace("/[^a-zA-Z]/", "", $name);
-        return lcfirst($this->getSingularClassName($name));
+        return lcfirst($name);
     }
 
 
@@ -163,6 +165,7 @@ class MakeController extends Command
     public function getEditableFieldsSetring()
     {
         $name = strtolower($this->entity['name']);
+        $name =  preg_replace("/[^a-zA-Z]/", "", $name);
 
         $string = '';
         if($this->entity['layout']==2){
